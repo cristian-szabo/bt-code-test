@@ -33,7 +33,7 @@ public:
 
 private:
 
-    using RouterCSVParser = CSVParser<5>;
+    typedef CSVParser<5> RouterCSVParser;
 
     std::string csv_file;
 
