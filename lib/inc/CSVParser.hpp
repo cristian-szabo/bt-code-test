@@ -270,9 +270,9 @@ public:
             TrimPolicy::trim(column);
             QuotePolicy::unescape(column);
 
-            auto column_iter = std::find(header_columns.begin(), header_columns.end(), column);
+            auto column_iter = std::find(this->header_columns.begin(), this->header_columns.end(), column);
 
-            if (column_iter == header_columns.end())
+            if (column_iter == this->header_columns.end())
             {
                 if (ignore_column == IgnoreType::ExtraColumn)
                 {
@@ -284,7 +284,7 @@ public:
                 }
             }
 
-            std::size_t index = std::distance(header_columns.begin(), column_iter);
+            std::size_t index = std::distance(this->header_columns.begin(), column_iter);
 
             found_columns[index] = true;
 
