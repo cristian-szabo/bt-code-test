@@ -23,7 +23,11 @@ void Hostname::create(const ci_string & hostname)
 
     data = hostname;
 
-    std::transform(data.begin(), data.end(), data.begin(), std::tolower);
+    std::for_each(data.begin(), data.end(), 
+        [](char& c) 
+    {
+        c = std::tolower(c);
+    });
 }
 
 void Hostname::destroy()
