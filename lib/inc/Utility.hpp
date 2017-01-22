@@ -1,5 +1,6 @@
 #pragma once
 
+#include <locale>
 #include <string>
 #include <cctype>
 

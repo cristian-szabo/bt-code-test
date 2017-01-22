@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+#include <algorithm>
 #include <array>
 #include <sstream>
 
