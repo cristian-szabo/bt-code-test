@@ -5,6 +5,9 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <cctype>
+
+#include "Utility.hpp"
 
 /*
     TrimChars Policy
@@ -159,6 +162,44 @@ struct EmptyLineComment
         return false;
     }
 };
+
+/*
+    Helper
+*/
+
+namespace detail
+{
+    template<class T>
+    inline void parse(const std::string& cell, T& object)
+    {
+        std::istringstream iss(cell);
+
+        iss >> object;
+    }
+
+    template<>
+    inline void parse(const std::string& cell, bool& object)
+    {
+        std::string buffer = cell;
+
+        std::for_each(buffer.begin(), buffer.end(),
+            [](char& c)
+        {
+            c = std::tolower(c);
+        });
+
+        std::istringstream iss(buffer);
+        iss.imbue({ iss.getloc(), new boolyesno() });
+
+        iss >> std::boolalpha >> object;
+    }
+
+    template<>
+    inline void parse(const std::string& cell, std::string& object)
+    {
+        object.assign(cell.begin(), cell.end());
+    }
+}
 
 /*
     CSV Parser
@@ -338,7 +379,7 @@ private:
 
         if (column_skip.at(index) != -1)
         {
-            parse<T>(cell, object);
+            detail::parse<T>(cell, object);
         }
 
         setRowColumns(index + 1, column_types...);
@@ -346,34 +387,6 @@ private:
 
     void setRowColumns(std::size_t index)
     {
-    }
-
-    template<class T>
-    void parse(const std::string& cell, T& object)
-    {
-        std::istringstream iss(cell);
-
-        iss >> object;
-    }
-
-    template<>
-    void parse(const std::string& cell, bool& object)
-    {
-        std::string buffer = cell;
-
-        std::transform(buffer.begin(), buffer.end(), buffer.begin(), std::tolower);
-
-        std::istringstream iss(buffer);
-
-        iss.imbue({ iss.getloc(), new boolyesno() });
-
-        iss >> std::boolalpha >> object;
-    }
-
-    template<>
-    void parse(const std::string& cell, std::string& object)
-    {
-        object.assign(cell.begin(), cell.end());
     }
 
 };
