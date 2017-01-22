@@ -1,5 +1,6 @@
 project (CodeTestApp)
 
+include_directories ("${CMAKE_SOURCE_DIR}/lib/inc")
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/inc")
 
 file (GLOB HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp")
