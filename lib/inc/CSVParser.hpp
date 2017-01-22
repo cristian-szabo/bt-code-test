@@ -16,19 +16,19 @@
 
 namespace detail
 {
-    template<class... OtherTrimChar>
-    static inline bool isTrimChar(char c, char trim_char, OtherTrimChar... other_trim_char)
-    {
-        return c == trim_char || isTrimChar(c, other_trim_char...);
-    }
-
-    static inline bool isTrimChar(char c)
+    inline bool isTrimChar(char c)
     {
         return false;
     }
 
+    template<class... TrimChar>
+    inline bool isTrimChar(char c, char trim_char, TrimChar... other_trim_char)
+    {
+        return c == trim_char || isTrimChar(c, other_trim_char...);
+    }
+
     template<class T>
-    static inline void parse(const std::string& cell, T& object)
+    inline void parse(const std::string& cell, T& object)
     {
         std::istringstream iss(cell);
 
@@ -36,7 +36,7 @@ namespace detail
     }
 
     template<>
-    static inline void parse(const std::string& cell, bool& object)
+    inline void parse(const std::string& cell, bool& object)
     {
         std::string buffer = cell;
 
@@ -53,7 +53,7 @@ namespace detail
     }
 
     template<>
-    static inline void parse(const std::string& cell, std::string& object)
+    inline void parse(const std::string& cell, std::string& object)
     {
         object.assign(cell.begin(), cell.end());
     }
