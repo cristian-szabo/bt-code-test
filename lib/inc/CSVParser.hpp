@@ -11,38 +11,71 @@
 #include "Utility.hpp"
 
 /*
+    Helper Functions
+*/
+
+namespace detail
+{
+    template<class... OtherTrimChar>
+    static inline bool isTrimChar(char c, char trim_char, OtherTrimChar... other_trim_char)
+    {
+        return c == trim_char || isTrimChar(c, other_trim_char...);
+    }
+
+    static inline bool isTrimChar(char c)
+    {
+        return false;
+    }
+
+    template<class T>
+    static inline void parse(const std::string& cell, T& object)
+    {
+        std::istringstream iss(cell);
+
+        iss >> object;
+    }
+
+    template<>
+    static inline void parse(const std::string& cell, bool& object)
+    {
+        std::string buffer = cell;
+
+        std::for_each(buffer.begin(), buffer.end(),
+            [](char& c)
+        {
+            c = std::tolower(c);
+        });
+
+        std::istringstream iss(buffer);
+        iss.imbue({ iss.getloc(), new boolyesno() });
+
+        iss >> std::boolalpha >> object;
+    }
+
+    template<>
+    static inline void parse(const std::string& cell, std::string& object)
+    {
+        object.assign(cell.begin(), cell.end());
+    }
+}
+
+/*
     TrimChars Policy
 */
 
 template<char... TrimChar>
 struct TrimChars
 {
-public:
-
     static void trim(std::string& line) 
     {
         auto found_iter = std::remove_if(line.begin(), line.end(),
             [](char c) 
         {
-            return isTrimChar(c, TrimChar...);
+            return detail::isTrimChar(c, TrimChar...);
         });
 
         found_iter = line.erase(found_iter, line.end());
     }
-
-private:
-
-    static bool isTrimChar(char c)
-    {
-        return false;
-    }
-
-    template<class... OtherTrimChar>
-    static bool isTrimChar(char c, char trim_char, OtherTrimChar... other_trim_char) 
-    {
-        return c == trim_char || isTrimChar(c, other_trim_char...);
-    }
-
 };
 
 /*
@@ -163,44 +196,6 @@ struct EmptyLineComment
         return false;
     }
 };
-
-/*
-    Helper
-*/
-
-namespace detail
-{
-    template<class T>
-    inline void parse(const std::string& cell, T& object)
-    {
-        std::istringstream iss(cell);
-
-        iss >> object;
-    }
-
-    template<>
-    inline void parse(const std::string& cell, bool& object)
-    {
-        std::string buffer = cell;
-
-        std::for_each(buffer.begin(), buffer.end(),
-            [](char& c)
-        {
-            c = std::tolower(c);
-        });
-
-        std::istringstream iss(buffer);
-        iss.imbue({ iss.getloc(), new boolyesno() });
-
-        iss >> std::boolalpha >> object;
-    }
-
-    template<>
-    inline void parse(const std::string& cell, std::string& object)
-    {
-        object.assign(cell.begin(), cell.end());
-    }
-}
 
 /*
     CSV Parser
