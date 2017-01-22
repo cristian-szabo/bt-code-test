@@ -9,6 +9,3 @@ source_group ("Include\\" FILES ${HEADER_FILES})
 source_group ("Source\\" FILES ${SOURCE_FILES})
 
 add_library (${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
-
-target_include_directories (${PROJECT_NAME} PUBLIC  
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>)
