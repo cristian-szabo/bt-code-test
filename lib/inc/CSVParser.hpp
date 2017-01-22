@@ -239,14 +239,14 @@ public:
     }
 
     template<class ...ColumnTypes>
-    void readHeader(IgnoreType ignore_column, ColumnTypes... header_columns)
+    void readHeader(IgnoreType ignore_column, ColumnTypes&... header_columns)
     {
         constexpr std::size_t column_count = sizeof...(ColumnTypes);
 
         static_assert(column_count >= column_num, "Not enough columns specified");
         static_assert(column_count <= column_num, "Too many columns specified");
 
-        setHeaderColumns(std::forward<ColumnTypes>(header_columns)...);
+        setHeaderColumns(header_columns...);
 
         std::string line;
 
