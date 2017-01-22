@@ -14,7 +14,7 @@ struct ci_char_traits : public std::char_traits<char>
     static const char* find(const char* s, int n, char a);
 };
 
-using ci_string = std::basic_string<char, ci_char_traits>;
+typedef std::basic_string<char, ci_char_traits> ci_string;
 
 struct boolyesno : std::numpunct<char>
 {
