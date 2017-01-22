@@ -20,7 +20,7 @@ struct boolyesno : std::numpunct<char>
 {
 protected:
 
-    std::string do_truename() const override;
+    std::string do_truename() const;
 
-    std::string do_falsename() const override;
+    std::string do_falsename() const;
 };
