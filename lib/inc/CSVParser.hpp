@@ -242,7 +242,7 @@ public:
         {
             std::getline(reader, line);
 
-            if (line.empty())
+            if (reader.eof())
             {
                 throw std::runtime_error("Header row is missing!");
             }
@@ -289,7 +289,7 @@ public:
         {
             std::getline(reader, line);
 
-            if (line.empty())
+            if (reader.eof())
             {
                 return false;
             }
