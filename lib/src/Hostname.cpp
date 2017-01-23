@@ -23,11 +23,10 @@ bool Hostname::create(const ci_string & hostname)
 
     ci_string buffer = hostname;
 
-    std::for_each(buffer.begin(), buffer.end(),
-        [](char& c) 
+    for (char& c : buffer)
     {
         c = std::tolower(c);
-    });
+    }
 
     if (std::isdigit(buffer[0]) || buffer[0] == '_')
     {

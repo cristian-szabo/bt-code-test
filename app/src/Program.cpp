@@ -92,11 +92,10 @@ int Program::run()
 
     iter_router = routers.erase(iter_router, routers.end());
 
-    std::for_each(routers.begin(), routers.end(),
-        [](const Router& router)
-    {       
+    for (const Router& router : routers)
+    {
         std::cout << router << std::endl;
-    });
+    }
 
     return 0;
 }

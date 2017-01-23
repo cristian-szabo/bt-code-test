@@ -40,11 +40,10 @@ namespace detail
     {
         std::string buffer = cell;
 
-        std::for_each(buffer.begin(), buffer.end(),
-            [](char& c)
+        for (char& c : buffer)
         {
             c = std::tolower(c);
-        });
+        }
 
         std::istringstream iss(buffer);
         iss.imbue({ iss.getloc(), new boolyesno() });

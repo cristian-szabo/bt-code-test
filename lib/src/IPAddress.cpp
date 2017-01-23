@@ -14,14 +14,13 @@ bool IPAddress::isValid()
 {
     bool valid = true;
 
-    std::for_each(data.begin(), data.end(), 
-        [&](std::int32_t addr) 
+    for (std::int32_t addr : data)
     {
         if (addr < 0 || addr > 255)
         {
             valid = false;
         }
-    });
+    }
 
     return valid;
 }
@@ -44,8 +43,7 @@ bool IPAddress::create(const std::string & ip_addr)
 
     std::istringstream ss(buffer);
 
-    std::for_each(data.begin(), data.end(),
-        [&](std::int32_t& addr)
+    for (std::int32_t& addr : data)
     {
         std::string val;
         std::getline(ss, val, '.');
@@ -53,13 +51,13 @@ bool IPAddress::create(const std::string & ip_addr)
         if (val.find_first_not_of("0123456789") == std::string::npos)
         {
             std::int32_t tmp = stoi(val);
-            
+
             if (tmp >= 0 && tmp <= 255)
             {
                 addr = tmp;
             }
         }
-    });
+    }
 
     std::size_t valid_addr = std::count(data.begin(), data.end(), -1);
 
