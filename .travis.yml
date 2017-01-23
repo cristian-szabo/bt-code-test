@@ -18,4 +18,4 @@ script:
     
 after_success:
     - $TRAVIS_BUILD_DIR/build/test/CodeTestCheck --reporter=spec
-    - $TRAVIS_BUILD_DIR/build/app/CodeTestApp $TRAVIS_BUILD_DIR/res/sample.csv
+    - $TRAVIS_BUILD_DIR/build/app/CodeTestApp res/sample.csv
