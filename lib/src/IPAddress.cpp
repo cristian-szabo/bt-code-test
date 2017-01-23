@@ -35,7 +35,7 @@ bool IPAddress::create(const std::string & ip_addr)
 
     std::string buffer = ip_addr;
 
-    std::regex self_regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+    std::regex self_regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
         std::regex_constants::ECMAScript | std::regex_constants::icase);
 
     if (!std::regex_search(buffer, self_regex))
