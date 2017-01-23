@@ -15,14 +15,14 @@ go_bandit([]() {
             }
         });
 
-        it("should create from minimum ip address values", [&]() {
-            bool result = ip_addr.create("0.0.0.0");
+        it("should create from minimum ip address value", [&]() {
+            bool result = ip_addr.create("1.0.0.0");
             
             AssertThat(result, Equals(true));
         });
 
-        it("should create from maximum ip address values", [&]() {
-            bool result = ip_addr.create("255.255.255.255");
+        it("should create from maximum ip address value", [&]() {
+            bool result = ip_addr.create("255.255.255.254");
             
             AssertThat(result, Equals(true));
         });
@@ -34,13 +34,43 @@ go_bandit([]() {
         });
 
         it("should not create if one value is a letter", [&]() {
-            bool result = ip_addr.create("a.0.0.0");
+            bool result = ip_addr.create("a.b.c.d");
 
             AssertThat(result, Equals(false));
         });
 
-        it("should not create if one value is missing", [&]() {
-            bool result = ip_addr.create("0.0.0");
+        it("should not create if one chunk is missing", [&]() {
+            bool result = ip_addr.create("1.0.0");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create if one chunk is empty", [&]() {
+            bool result = ip_addr.create("5.0..7");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create if a chunk is a special character", [&]() {
+            bool result = ip_addr.create("*.'.;./");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create if a chunk is a negative number", [&]() {
+            bool result = ip_addr.create("-3.-257.-0.-1");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create if a chunk hash numbers and special characters", [&]() {
+            bool result = ip_addr.create("3/2.2^3.7.2");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create if a ip address is localhost", [&]() {
+            bool result = ip_addr.create("127.0.0.1");
 
             AssertThat(result, Equals(false));
         });
