@@ -300,6 +300,11 @@ public:
         {
             std::string cell = QuotePolicy::split(line);
 
+            if (cell.empty())
+            {
+                throw std::runtime_error("Too few columns in the current row!");
+            }
+
             if (skip_column < 0)
             {
                 row_columns.push_back(std::string());
@@ -314,6 +319,11 @@ public:
         });
 
         setRowColumns(0, column_types...);
+
+        if (!line.empty())
+        {
+            throw std::runtime_error("Too many columns in the current row!");
+        }
 
         return true;
     }
