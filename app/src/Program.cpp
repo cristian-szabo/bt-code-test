@@ -40,6 +40,11 @@ int Program::run()
 
     while (csv.readRow(hostname, ip_address, patched, os_version, notes))
     {
+        if (!hostname.isValid() || !ip_address.isValid())
+        {
+            continue;
+        }
+
         routers.emplace_back(hostname, ip_address, patched, os_version, notes);
     }
 
