@@ -27,6 +27,8 @@ int Program::run()
     std::replace(work_dir.begin(), work_dir.end(), '\\', '/');
     work_dir += '/';
 
+    std::cout << "Current working directory: " << work_dir << std::endl;
+
     std::ifstream file(work_dir + csv_file);
 
     if (!file.is_open())
