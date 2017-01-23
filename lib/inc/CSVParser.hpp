@@ -71,7 +71,7 @@ struct TrimChars
         auto found_iter = std::remove_if(line.begin(), line.end(),
             [](char c) 
         {
-            return detail::isTrimChar(c, TrimChar...);
+            return ::detail::isTrimChar(c, TrimChar...);
         });
 
         found_iter = line.erase(found_iter, line.end());
@@ -212,15 +212,6 @@ class CSVParser
 {
 public:
 
-    enum class IgnoreType : std::size_t
-    {
-        Invalid = 0,
-        NoColumn,
-        ExtraColumn,
-        MissingColumn,
-        MaxCount
-    };
-
     explicit CSVParser(const std::string& data) 
     {
         header_columns.resize(column_num);
@@ -236,7 +227,7 @@ public:
     }
 
     template<class ...ColumnTypes>
-    void readHeader(IgnoreType ignore_column, ColumnTypes&... header_columns)
+    void readHeader(ColumnTypes&... header_columns)
     {
         constexpr std::size_t column_count = sizeof...(ColumnTypes);
 
@@ -271,33 +262,14 @@ public:
 
             if (column_iter == this->header_columns.end())
             {
-                if (ignore_column == IgnoreType::ExtraColumn)
-                {
-                    column_skip.push_back(-1);
-                }
-                else
-                {
-                    throw std::runtime_error("Column not found!");
-                }
+                throw std::runtime_error("Column not found!");
             }
 
             std::size_t index = std::distance(this->header_columns.begin(), column_iter);
 
-            found_columns[index] = true;
-
             column_skip.push_back(index);
-        }
 
-        if (ignore_column != IgnoreType::MissingColumn)
-        {
-            std::for_each(found_columns.begin(), found_columns.end(), 
-                [](bool found_column) 
-            {
-                if (!found_column)
-                {
-                    throw std::runtime_error("Missing column in header file");
-                }
-            });
+            found_columns[index] = true;
         }
     }
 
@@ -377,7 +349,7 @@ private:
 
         if (column_skip.at(index) != -1)
         {
-            detail::parse<T>(cell, object);
+            ::detail::parse<T>(cell, object);
         }
 
         setRowColumns(index + 1, column_types...);

@@ -35,7 +35,7 @@ int Program::run()
     }
 
     RouterCSVParser csv(file);
-    csv.readHeader(RouterCSVParser::IgnoreType::NoColumn, "Hostname", "IP Address", "Patched?", "OS Version", "Notes");
+    csv.readHeader("Hostname", "IP Address", "Patched?", "OS Version", "Notes");
 
     std::vector<Router> routers;
     Hostname hostname;
