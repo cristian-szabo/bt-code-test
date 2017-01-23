@@ -31,4 +31,4 @@ add_executable (${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 add_dependencies (${PROJECT_NAME} Bandit)
 
-target_link_libraries (${PROJECT_NAME} PUBLIC CodeTestLib)
+target_link_libraries (${PROJECT_NAME} CodeTestLib)
