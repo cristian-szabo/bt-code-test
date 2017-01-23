@@ -221,16 +221,14 @@ public:
         MaxCount
     };
 
-    CSVParser(const std::string& file_name)
+    explicit CSVParser(const std::string& data) : CSVParser()
     {
-        header_columns.resize(column_num);
+        reader << data;
+    }
 
-        file.open(file_name);
-
-        if (!file)
-        {
-            throw std::runtime_error("CSV file not found!");
-        }
+    explicit CSVParser(const std::ifstream& file) : CSVParser()
+    {
+        reader << file.rdbuf();
     }
 
     template<class ...ColumnTypes>
@@ -247,7 +245,7 @@ public:
 
         do
         {
-            std::getline(file, line);
+            std::getline(reader, line);
 
             if (line.empty())
             {
@@ -311,7 +309,7 @@ public:
 
         do
         {
-            std::getline(file, line);
+            std::getline(reader, line);
 
             if (line.empty())
             {
@@ -346,13 +344,18 @@ public:
 
 private:
 
-    std::ifstream file;
+    std::stringstream reader;
 
     std::vector<std::string> header_columns;
 
     std::vector<std::int32_t> column_skip;
 
     std::vector<std::string> row_columns;
+
+    CSVParser()
+    {
+        header_columns.resize(column_num);
+    }
 
     template<class ...ColumnTypes>
     void setHeaderColumns(const std::string& column_name, ColumnTypes... column_types) 

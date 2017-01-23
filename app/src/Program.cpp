@@ -27,8 +27,14 @@ int Program::run()
     std::replace(work_dir.begin(), work_dir.end(), '\\', '/');
     work_dir += '/';
 
-    RouterCSVParser csv(work_dir + csv_file);
+    std::ifstream file(work_dir + csv_file);
 
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Failed to open CSV file!");
+    }
+
+    RouterCSVParser csv(file);
     csv.readHeader(RouterCSVParser::IgnoreType::NoColumn, "Hostname", "IP Address", "Patched?", "OS Version", "Notes");
 
     std::vector<Router> routers;

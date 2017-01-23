@@ -5,12 +5,10 @@
 using namespace bandit;
 
 go_bandit([]() {
-    describe("CSVParser", []() {
-        before_each([&]() {
-            
-        });
+    describe("CSVParser Test", []() {
+        CSVParser<1> csv(R"(column1 ,column2\ncell1,cell2\n)");
 
-        it("Test 1", [&]() {
+        it("should trim white spaces from column and header", [&]() {
             AssertThat(3, Equals(3));
         });
     });
