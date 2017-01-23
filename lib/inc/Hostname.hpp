@@ -16,7 +16,7 @@ public:
 
     bool isValid();
 
-    void create(const ci_string& hostname);
+    bool create(const ci_string& hostname);
 
     void destroy();
 

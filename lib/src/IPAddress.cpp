@@ -26,14 +26,24 @@ bool IPAddress::isValid()
     return valid;
 }
 
-void IPAddress::create(const std::string & ip_addr)
+bool IPAddress::create(const std::string & ip_addr)
 {
     if (isValid())
     {
         throw std::runtime_error("IPAddress is defined!");
     }
 
-    std::istringstream ss(ip_addr);
+    std::string buffer = ip_addr;
+
+    std::regex self_regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+        std::regex_constants::ECMAScript | std::regex_constants::icase);
+
+    if (!std::regex_search(buffer, self_regex))
+    {
+        return false;
+    }
+
+    std::istringstream ss(buffer);
 
     std::for_each(data.begin(), data.end(),
         [&](std::int32_t& addr)
@@ -43,6 +53,8 @@ void IPAddress::create(const std::string & ip_addr)
 
         addr = stoi(val);
     });
+
+    return true;
 }
 
 void IPAddress::destroy()

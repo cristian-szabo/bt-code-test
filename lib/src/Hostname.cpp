@@ -14,20 +14,30 @@ bool Hostname::isValid()
     return !data.empty();
 }
 
-void Hostname::create(const ci_string & hostname)
+bool Hostname::create(const ci_string & hostname)
 {
     if (isValid())
     {
         throw std::runtime_error("Hostname is defined!");
     }
 
-    data = hostname;
+    ci_string buffer = hostname;
 
-    std::for_each(data.begin(), data.end(), 
+    std::for_each(buffer.begin(), buffer.end(),
         [](char& c) 
     {
         c = std::tolower(c);
     });
+
+    std::regex self_regex("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$",
+        std::regex_constants::ECMAScript | std::regex_constants::icase);
+
+    if (!std::regex_search(buffer, self_regex))
+    {
+        return false;
+    }
+
+    data = buffer;
 }
 
 void Hostname::destroy()

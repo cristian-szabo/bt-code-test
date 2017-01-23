@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <sstream>
+#include <regex>
 
 class IPAddress
 {
@@ -15,7 +16,7 @@ public:
 
     bool isValid();
 
-    void create(const std::string& ip_addr);
+    bool create(const std::string& ip_addr);
 
     void destroy();
 
