@@ -1,13 +1,17 @@
-sudo: true
+sudo: false
 language: cpp
 
 compiler:
     - g++
 
-before_install:
-    - sudo add-apt-repository ppa:smspillaz/cmake-2.8.12 -y
-    - sudo apt-get update -q
-    - sudo apt-get install cmake-data cmake -y
+addons:
+  apt:
+    sources:
+        - ppa:smspillaz/cmake-2.8.12 -y
+        - ubuntu-toolchain-r-test
+    packages:
+        - cmake-data 
+        - cmake
 
 script:
     - cmake -G "Unix Makefiles" -B./build -H./
