@@ -188,7 +188,7 @@ struct EmptyLineComment
         found_iter = std::remove(buffer.begin(), buffer.end(), '\t');
         found_iter = buffer.erase(found_iter, buffer.end());
             
-        if (found_iter != buffer.end())
+        if (buffer.empty())
         {
             return true;
         }
@@ -231,8 +231,8 @@ public:
     {
         constexpr std::size_t column_count = sizeof...(ColumnTypes);
 
-        static_assert(column_count >= column_num, "Not enough columns specified");
-        static_assert(column_count <= column_num, "Too many columns specified");
+        static_assert(column_count >= column_num, "Header columns out of bounds");
+        static_assert(column_count <= column_num, "Header columns out of bounds");
 
         setHeaderColumns(header_columns...);
 
@@ -278,8 +278,10 @@ public:
     {
         constexpr std::size_t column_cout = sizeof...(ColumnTypes);
 
-        static_assert(column_cout >= column_num, "Not enough columns specified");
-        static_assert(column_cout <= column_num, "Too many columns specified");
+        static_assert(column_cout >= column_num, "Row columns out of bounds");
+        static_assert(column_cout <= column_num, "Row columns out of bounds");
+
+        row_columns.clear();
 
         std::string line;
 
@@ -313,9 +315,16 @@ public:
 
         setRowColumns(0, column_types...);
 
-        row_columns.clear();
-
         return true;
+    }
+
+    template<unsigned int index>
+    std::string getHeaderColumn()
+    {
+        static_assert(index < column_num, "Header column index out of bounds 1");
+        static_assert(index >= 0, "Header column index out of bounds 2");
+
+        return header_columns.at(index);
     }
 
 private:
