@@ -4,7 +4,7 @@ Program::Program(std::vector<std::string> args)
 {
     if (!args.size())
     {
-        throw std::runtime_error("Invalid number of arguments!");
+        throw std::runtime_error("Invalid number of arguments!\nPlease specify the location of the CSV file.");
     }
 
     csv_file = args[0];
@@ -23,18 +23,22 @@ int Program::run()
         throw std::runtime_error("Failed to get current directory path!");
     }
 
+    // Format current directoy to Linux style
     std::string work_dir(path);
     std::replace(work_dir.begin(), work_dir.end(), '\\', '/');
     work_dir += '/';
 
     std::ifstream file(work_dir + csv_file);
 
+    // Check if the CSV file was opened correctly
     if (!file.is_open())
     {
         throw std::runtime_error("Failed to open CSV file!");
     }
 
     RouterCSVParser csv(file);
+
+    // Read header row from the CSV file
     csv.readHeader("Hostname", "IP Address", "Patched?", "OS Version", "Notes");
 
     std::vector<Router> routers;
@@ -44,8 +48,10 @@ int Program::run()
     std::string os_version;
     std::string notes;
 
+    // Read each row containing the router data from teh CSV file
     while (csv.readRow(hostname, ip_address, patched, os_version, notes))
     {
+        // Store only routers with valid hostname and ip address
         if (!hostname.isValid() || !ip_address.isValid())
         {
             continue;
@@ -54,14 +60,23 @@ int Program::run()
         routers.emplace_back(hostname, ip_address, patched, os_version, notes);
     }
 
+    // Remove routers which don't meet the firt two criterias:
+    // 1. The router has not already been patched
+    // 2. The current version of the router OS is 12 or above
     auto iter_router = std::remove_if(routers.begin(), routers.end(),
         [](const Router& router)
     {
+        // Assumption: OS version is formed of two chunks separated by a dot character 
+        // which can be stored as a float variable and later compared as a floating point number.
         return router.getOSVersion() < 12.0 || router.getPatched() == true;
     });
 
+    // Perform remove operation
     iter_router = routers.erase(iter_router, routers.end());
 
+    // Remove routers which don't meet the next two criteris:
+    // 3. There are no other routers which share the same IP address
+    // 4. There are no other routers which share the same hostname
     iter_router = std::remove_if(routers.begin(), routers.end(),
         [&routers](const Router& router)
     {
@@ -90,8 +105,11 @@ int Program::run()
         return false;
     });
 
+    // Perform remove operation
     iter_router = routers.erase(iter_router, routers.end());
 
+    // Display routers which should be patched int the following format:
+    // Print: {hostname} ({ip-address}), OS version {os-version} [{notes}]
     for (const Router& router : routers)
     {
         std::cout << router << std::endl;
