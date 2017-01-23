@@ -221,13 +221,17 @@ public:
         MaxCount
     };
 
-    explicit CSVParser(const std::string& data) : CSVParser()
+    explicit CSVParser(const std::string& data) 
     {
+        header_columns.resize(column_num);
+
         reader << data;
     }
 
-    explicit CSVParser(const std::ifstream& file) : CSVParser()
+    explicit CSVParser(const std::ifstream& file)
     {
+        header_columns.resize(column_num);
+
         reader << file.rdbuf();
     }
 
@@ -351,11 +355,6 @@ private:
     std::vector<std::int32_t> column_skip;
 
     std::vector<std::string> row_columns;
-
-    CSVParser()
-    {
-        header_columns.resize(column_num);
-    }
 
     template<class ...ColumnTypes>
     void setHeaderColumns(const std::string& column_name, ColumnTypes... column_types) 
