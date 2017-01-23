@@ -295,17 +295,18 @@ public:
             }
         } while (CommentPolicy::isComment(line));
 
-        std::for_each(column_skip.begin(), column_skip.end(), 
-            [&](std::int32_t skip_column) 
+        for(auto column_iter = column_skip.begin(); 
+            column_iter != column_skip.end(); 
+            column_iter++)
         {
-            std::string cell = QuotePolicy::split(line);
-
-            if (cell.empty())
+            if (line.empty() && column_iter != (column_skip.begin() + column_skip.size() - 1))
             {
                 throw std::runtime_error("Too few columns in the current row!");
             }
 
-            if (skip_column < 0)
+            std::string cell = QuotePolicy::split(line);
+
+            if ((*column_iter) < 0)
             {
                 row_columns.push_back(std::string());
             }
@@ -316,7 +317,7 @@ public:
 
                 row_columns.push_back(cell);
             }
-        });
+        };
 
         setRowColumns(0, column_types...);
 
