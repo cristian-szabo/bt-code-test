@@ -10,6 +10,10 @@ int main(int argc, char* argv[])
 
         exit_code = app.run();
     }
+    catch (const std::regex_error& e) {
+        std::cout << "regex_error caught: " << e.what() << '\n';
+        std::cout << "The code was: " << e.code() << '\n';
+    }
     catch (const std::exception& ex)
     {
         std::cout << ex.what() << std::endl;
