@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cctype>
 #include <algorithm>
 #include <iterator>
-#include <regex>
 
 #include "Utility.hpp"
 

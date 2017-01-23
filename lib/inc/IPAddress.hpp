@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <array>
 #include <sstream>
-#include <regex>
 
 class IPAddress
 {

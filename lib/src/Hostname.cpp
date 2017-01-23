@@ -29,10 +29,12 @@ bool Hostname::create(const ci_string & hostname)
         c = std::tolower(c);
     });
 
-    std::regex self_regex("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$",
-        std::regex_constants::ECMAScript | std::regex_constants::icase);
+    if (std::isdigit(buffer[0]) || buffer[0] == '_')
+    {
+        return false;
+    }
 
-    if (!std::regex_search(buffer, self_regex))
+    if (buffer.find('.') == std::string::npos)
     {
         return false;
     }

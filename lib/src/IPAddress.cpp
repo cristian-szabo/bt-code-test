@@ -35,10 +35,9 @@ bool IPAddress::create(const std::string & ip_addr)
 
     std::string buffer = ip_addr;
 
-    std::regex self_regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-        std::regex_constants::ECMAScript | std::regex_constants::icase);
+    std::size_t dot_num = std::count(buffer.begin(), buffer.end(), '.');
 
-    if (!std::regex_search(buffer, self_regex))
+    if (dot_num != 3)
     {
         return false;
     }
@@ -51,8 +50,18 @@ bool IPAddress::create(const std::string & ip_addr)
         std::string val;
         std::getline(ss, val, '.');
 
-        addr = stoi(val);
+        if (val.find_first_not_of("0123456789") == std::string::npos)
+        {
+            addr = stoi(val);
+        }
     });
+
+    std::size_t valid_addr = std::count(buffer.begin(), buffer.end(), -1);
+
+    if (valid_addr != 0)
+    {
+        return false;
+    }
 
     return true;
 }
