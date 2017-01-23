@@ -2,16 +2,12 @@ sudo: false
 language: cpp
 
 compiler:
-    - gcc
+    - g++
 
 addons:
   apt:
-    sources:
-      - sourceline: 'ppa:smspillaz/cmake-2.8.12'
     packages:
-      - git
       - cmake
-      - g++
 
 before_install:
     - sudo add-apt-repository ppa:smspillaz/cmake-2.8.12
