@@ -52,11 +52,16 @@ bool IPAddress::create(const std::string & ip_addr)
 
         if (val.find_first_not_of("0123456789") == std::string::npos)
         {
-            addr = stoi(val);
+            std::int32_t tmp = stoi(val);
+            
+            if (tmp >= 0 && tmp <= 255)
+            {
+                addr = tmp;
+            }
         }
     });
 
-    std::size_t valid_addr = std::count(buffer.begin(), buffer.end(), -1);
+    std::size_t valid_addr = std::count(data.begin(), data.end(), -1);
 
     if (valid_addr != 0)
     {

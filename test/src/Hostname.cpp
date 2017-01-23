@@ -6,12 +6,37 @@ using namespace bandit;
 
 go_bandit([]() {
     describe("Hostname Test", []() {
-        before_each([&]() {
+        Hostname hostname;
 
+        after_each([&]() {
+            if (hostname.isValid())
+            {
+                hostname.destroy();
+            }
         });
 
-        it("should ", [&]() {
-            AssertThat(3, Equals(3));
+        it("should create from a valid hostname witout subdomain", [&]() {
+            bool result = hostname.create("test.com");
+
+            AssertThat(result, Equals(true));
+        });
+
+        it("should create from a valid hostname with subdomain", [&]() {
+            bool result = hostname.create("foo.test.com");
+
+            AssertThat(result, Equals(true));
+        });
+
+        it("should not create from a hostname starting with digit", [&]() {
+            bool result = hostname.create("123.com");
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create from hostname starting with underscore", [&]() {
+            bool result = hostname.create("_test.com");
+
+            AssertThat(result, Equals(false));
         });
     });
 });
