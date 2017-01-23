@@ -1,0 +1,21 @@
+sudo: false
+language: cpp
+
+compiler:
+    - g++
+
+addons:
+  apt:
+    sources:
+        - sourceline: 'ppa:smspillaz/cmake-2.8.12'
+    packages:
+        - cmake-data 
+        - cmake
+
+script:
+    - cmake -G "Unix Makefiles" -B./build -H./
+    - cmake --build ./build --target all
+    
+after_success:
+    - $TRAVIS_BUILD_DIR/build/test/CodeTestCheck --reporter=spec
+    - $TRAVIS_BUILD_DIR/build/app/CodeTestApp $TRAVIS_BUILD_DIR/res/sample.csv
