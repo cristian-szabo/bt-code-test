@@ -5,7 +5,7 @@
 using namespace bandit;
 
 go_bandit([]() {
-    describe("Test Hostname", []() {
+    describe("Hostname Test", []() {
         before_each([&]() {
 
         });
