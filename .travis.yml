@@ -4,10 +4,10 @@ language: cpp
 compiler:
     - g++
 
-addons:
-  apt:
-    packages:
-      - cmake
+before_install:
+    - sudo add-apt-repository ppa:smspillaz/cmake-2.8.12 -y
+    - sudo apt-get update -q
+    - sudo apt-get install cmake -y
 
 script:
     - cmake -G "Unix Makefiles" -B./build -H./
