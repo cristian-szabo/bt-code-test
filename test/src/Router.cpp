@@ -20,5 +20,12 @@ go_bandit([]() {
 
             AssertThat(router.getIPAddress(), Equals(ip_addr));
         });
+
+        it("should two router objects be equal", [&]() {
+            Router router1(hostname, ip_addr, false, "1.0", "");
+            Router router2(hostname, ip_addr, false, "1.0", "");
+
+            AssertThat(router1, Equals(router2));
+        });
     });
 });
