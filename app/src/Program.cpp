@@ -41,23 +41,21 @@ int Program::run()
     // Read header row from the CSV file
     csv.readHeader("Hostname", "IP Address", "Patched?", "OS Version", "Notes");
 
+    Router router;
     std::vector<Router> routers;
-    Hostname hostname;
-    IPAddress ip_address;
-    bool patched;
-    std::string os_version;
-    std::string notes;
+    std::string hostname, ip_address, patched, os_version, notes;
 
     // Read each row containing the router data from teh CSV file
     while (csv.readRow(hostname, ip_address, patched, os_version, notes))
     {
-        // Store only routers with valid hostname and ip address
-        if (!hostname.isValid() || !ip_address.isValid())
-        {
-            continue;
-        }
+        router.create(hostname, ip_address, patched, os_version, notes);
 
-        routers.emplace_back(hostname, ip_address, patched, os_version, notes);
+        if (router.isValid())
+        {
+            routers.push_back(router);
+
+            router.destroy();
+        }
     }
 
     // Remove routers which don't meet the firt two criterias:

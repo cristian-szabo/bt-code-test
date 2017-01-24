@@ -12,11 +12,21 @@ public:
 
     Router();
 
-    Router(Hostname hostname,
-        IPAddress ip_address,
-        bool patched,
-        std::string os_version,
-        std::string notes);
+    Router(const std::string& hostname,
+        const std::string& ip_address,
+        const std::string& patched,
+        const std::string& os_version,
+        const std::string& notes);
+
+    bool create(const std::string& hostname,
+        const std::string& ip_address,
+        const std::string& patched,
+        const std::string& os_version,
+        const std::string& notes);
+
+    bool isValid();
+
+    void destroy();
 
     Hostname getHostname() const;
 
@@ -42,7 +52,7 @@ private:
 
     IPAddress ip_address;
 
-    bool patched;
+    ci_string patched;
 
     std::string os_version;
 
