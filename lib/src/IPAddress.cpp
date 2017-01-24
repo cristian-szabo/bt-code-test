@@ -20,7 +20,7 @@ bool IPAddress::isValid()
 /*
     GCC 4.6 does not fully implement ECMAScript regex fully thus the use
     of the std::regex is not possible in the current version. With version
-    GCC 4.9 which fully implement C++ 11 features has regex functionality
+    GCC 4.9 which fully implements C++ 11 features has regex functionality
     implemented. The following regex can be used to check the ip address:
 
     "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";

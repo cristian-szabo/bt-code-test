@@ -64,8 +64,6 @@ int Program::run()
     auto iter_router = std::remove_if(routers.begin(), routers.end(),
         [](const Router& router)
     {
-        // Assumption: OS version is formed of two chunks separated by a dot character 
-        // which can be stored as a float variable and later compared as a floating point number.
         return router.getOSVersion() < 12.0 || router.getPatched() == true;
     });
 
@@ -78,6 +76,7 @@ int Program::run()
     iter_router = std::remove_if(routers.begin(), routers.end(),
         [&routers](const Router& router)
     {
+        // Find other routers with the same ip address
         auto iter_router = std::find_if(routers.begin(), routers.end(), 
             [&](const Router& search_router)
         {
@@ -89,6 +88,7 @@ int Program::run()
             return true;
         }
 
+        // Find other routers with the same hostname
         iter_router = std::find_if(routers.begin(), routers.end(),
             [&](const Router& search_router)
         {

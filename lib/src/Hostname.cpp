@@ -14,11 +14,24 @@ bool Hostname::isValid()
     return !data.empty();
 }
 
+/*
+    GCC 4.6 does not fully implement ECMAScript regex fully thus the use
+    of the std::regex is not possible in the current version. With version
+    GCC 4.9 which fully implements C++ 11 features has support for regex 
+    functionality. The following regex can be used to check the hostname:
+
+    "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
+*/
 bool Hostname::create(const ci_string & hostname)
 {
     if (isValid())
     {
         throw std::runtime_error("Hostname is defined!");
+    }
+
+    if (hostname.size() > 63 || hostname.size() < 10)
+    {
+        return false;
     }
 
     ci_string buffer = hostname;
@@ -28,14 +41,29 @@ bool Hostname::create(const ci_string & hostname)
         c = std::tolower(c);
     }
 
-    if (std::isdigit(buffer[0]) || buffer[0] == '_')
+    if (!std::isalpha(buffer[0]))
     {
         return false;
     }
 
-    if (buffer.find('.') == std::string::npos)
+    std::size_t last_pos = buffer.size() - 1;
+
+    if (!std::isalnum(buffer[last_pos]))
     {
         return false;
+    }
+
+    for (char c : buffer)
+    {
+        if (std::isalnum(c))
+        {
+            continue;
+        }
+
+        if (c != '.' && c != '-')
+        {
+            return false;
+        }
     }
 
     data = buffer;

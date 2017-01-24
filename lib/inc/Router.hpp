@@ -54,6 +54,8 @@ private:
 
     ci_string patched;
 
+    // Assumption: OS version is formed of two chunks separated by a dot character 
+    // which can be stored as a float variable and later compared as a floating point number.
     std::string os_version;
 
     std::string notes;

@@ -7,6 +7,14 @@
 
 #include "Utility.hpp"
 
+/*
+    Hostname assumptions:
+    - must be 63 characters or less (e.g. some Cisco IOS versions)
+    - should have at least 10 characters (RFC1035 - Domain Names - Implementation and Specification)
+    - follows the ARPANET rules: must start with a letter, end with a letter or digit, can only contain 
+    letters, digits and hyphens. To follow the BTCodeTest dots will also be permited.
+    - is case insensitive
+*/
 class Hostname
 {
 public:
