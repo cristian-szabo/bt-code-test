@@ -46,7 +46,6 @@ namespace detail
         }
 
         std::istringstream iss(buffer);
-        iss.imbue({ iss.getloc(), new boolyesno() });
 
         iss >> std::boolalpha >> object;
     }

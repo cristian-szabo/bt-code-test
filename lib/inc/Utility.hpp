@@ -16,12 +16,3 @@ struct ci_char_traits : public std::char_traits<char>
 };
 
 typedef std::basic_string<char, ci_char_traits> ci_string;
-
-struct boolyesno : std::numpunct<char>
-{
-protected:
-
-    std::string do_truename() const;
-
-    std::string do_falsename() const;
-};

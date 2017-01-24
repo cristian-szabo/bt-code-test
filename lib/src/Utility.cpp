@@ -62,13 +62,3 @@ std::basic_ostream<char>& operator<<(std::basic_ostream<char>& out, const ci_str
     out << str;
     return out;
 }
-
-std::string boolyesno::do_falsename() const
-{
-    return "no";
-}
-
-std::string boolyesno::do_truename() const
-{
-    return "yes";
-}
