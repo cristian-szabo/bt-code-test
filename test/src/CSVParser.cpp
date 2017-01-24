@@ -65,5 +65,46 @@ go_bandit([]() {
             AssertThat(cell1, Equals("cell1"));
             AssertThat(cell2, Equals("cell2"));
         });
+
+        it("should read 'true/false' value from cell as bool variable", [&]() {
+            CSVParser<2> csv("column1,column2\ntrue,false\n");
+            csv.readHeader("column1", "column2");
+
+            bool cell1, cell2;
+            csv.readRow(cell1, cell2);
+
+            AssertThat(cell1, Equals(true));
+            AssertThat(cell2, Equals(false));
+        });
+
+        it("should read 'floating number' value from cell as float variable", [&]() {
+            CSVParser<1> csv("column1\n1.0\n");
+            csv.readHeader("column1");
+
+            float cell1;
+            csv.readRow(cell1);
+
+            AssertThat(cell1, Equals(1.0));
+        });
+
+        it("should read 'integer number' value from cell as int variable", [&]() {
+            CSVParser<1> csv("column1\n1\n");
+            csv.readHeader("column1");
+
+            int cell1;
+            csv.readRow(cell1);
+
+            AssertThat(cell1, Equals(1));
+        });
+
+        it("should read 'text' value from cell as string variable", [&]() {
+            CSVParser<1> csv("column1\ncell1\n");
+            csv.readHeader("column1");
+
+            std::string cell1;
+            csv.readRow(cell1);
+
+            AssertThat(cell1, Equals("cell1"));
+        });
     });
 });

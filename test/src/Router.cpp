@@ -6,26 +6,71 @@ using namespace bandit;
 
 go_bandit([]() {
     describe("Router Test", []() {
-        Hostname hostname("test.com");
-        IPAddress ip_addr("1.1.1.1");
+        Router router;
+        std::string hostname = "test.com";
+        std::string ip_address = "1.1.1.1";
+        std::string patched = "no";
+        std::string os_version = "1.0";
+        std::string notes = "test";
 
-        it("should create a router object with a valid hostname", [&]() {
-            Router router(hostname, ip_addr, false, "1.0", "");
-
-            AssertThat(router.getHostname(), Equals(hostname));
+        after_each([&]() {
+            if (router.isValid())
+            {
+                router.destroy();
+            }
         });
 
-        it("should create a router object with a valid ip address", [&]() {
-            Router router(hostname, ip_addr, false, "1.0", "");
+        it("should create a router object with a valid data", [&]() {
+            bool result = router.create(hostname, ip_address, patched, os_version, notes);
 
-            AssertThat(router.getIPAddress(), Equals(ip_addr));
+            AssertThat(result, Equals(true));
+        });
+
+        it("should not create a router object with an invalid hostname", [&]() {
+            bool result = router.create("", ip_address, patched, os_version, notes);
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create a router object with an invalid ip address", [&]() {
+            bool result = router.create(hostname, "", patched, os_version, notes);
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create a router object with an invalid patched(yes/no)", [&]() {
+            bool result = router.create(hostname, ip_address, "", os_version, notes);
+
+            AssertThat(result, Equals(false));
+
+            result = router.create(hostname, ip_address, "123", os_version, notes);
+
+            AssertThat(result, Equals(false));
+
+            result = router.create(hostname, ip_address, "*;]", os_version, notes);
+
+            AssertThat(result, Equals(false));
+        });
+
+        it("should not create a router object with an invalid OS version", [&]() {
+            bool result = router.create(hostname, ip_address, patched, "", notes);
+
+            AssertThat(result, Equals(false));
+
+            result = router.create(hostname, ip_address, patched, "3xc", notes);
+
+            AssertThat(result, Equals(false));
+
+            result = router.create(hostname, ip_address, patched, "abc", notes);
+
+            AssertThat(result, Equals(false));
         });
 
         it("should two router objects be equal", [&]() {
-            Router router1(hostname, ip_addr, false, "1.0", "");
-            Router router2(hostname, ip_addr, false, "1.0", "");
+            bool result = router.create(hostname, ip_address, patched, os_version, notes);
+            Router router_other(hostname, ip_address, patched, os_version, notes);
 
-            AssertThat(router1, Equals(router2));
+            AssertThat(router, Equals(router_other));
         });
     });
 });
