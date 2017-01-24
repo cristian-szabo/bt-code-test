@@ -137,7 +137,11 @@ std::string Router::getNotes() const
 
 bool Router::operator==(const Router & other) const
 {
-    return hostname == other.hostname && ip_address == other.ip_address;
+    return (hostname == other.hostname && 
+        ip_address == other.ip_address &&
+        os_version == other.os_version &&
+        patched == other.patched &&
+        notes == other.notes);
 }
 
 bool Router::operator!=(const Router & other) const
