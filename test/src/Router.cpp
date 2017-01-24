@@ -7,7 +7,7 @@ using namespace bandit;
 go_bandit([]() {
     describe("Router Test", []() {
         Router router;
-        std::string hostname = "test.com";
+        std::string hostname = "example.com";
         std::string ip_address = "1.1.1.1";
         std::string patched = "no";
         std::string os_version = "1.0";
