@@ -12,10 +12,19 @@ addons:
         - cmake-data 
         - cmake
 
-script:
+before_script:
     - cmake -G "Unix Makefiles" -B./build -H./
+    
+script:    
     - cmake --build ./build --target all
     
 after_success:
     - $TRAVIS_BUILD_DIR/build/test/CodeTestCheck --reporter=spec
-    - $TRAVIS_BUILD_DIR/build/app/CodeTestApp res/sample.csv
+
+deploy:
+    provider: releases
+    api_key: "ada3ad1ee68bd8bc9d94f08c3824ca7f00472f06"
+    file: $TRAVIS_BUILD_DIR/build/app/CodeTestApp
+    skip_cleanup: true
+    on:
+        tags: true
