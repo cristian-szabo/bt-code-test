@@ -1,29 +1,20 @@
 sudo: false
 language: cpp
-
-compiler:
-    - g++
-
-addons:
-  apt:
-    sources:
-        - sourceline: 'ppa:smspillaz/cmake-2.8.12'
-    packages:
-        - cmake-data 
-        - cmake
+compiler: g++
 
 before_script:
     - cmake -G "Unix Makefiles" -B./build -H./
     
 script:    
     - cmake --build ./build --target all
-    - $TRAVIS_BUILD_DIR/build/test/CodeTestCheck --reporter=spec
+    - ./build/test/CodeTestCheck --reporter=spec
 
 deploy:
     provider: releases
     api_key:
         secure: ${GITHUB_AUTH}
-    file: $TRAVIS_BUILD_DIR/build/app/CodeTestApp
+    file: 
+        - ./build/app/CodeTestApp
     skip_cleanup: true
     on:
         tags: true
