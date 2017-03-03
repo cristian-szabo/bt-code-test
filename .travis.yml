@@ -2,6 +2,14 @@ sudo: false
 language: cpp
 compiler: g++
 
+addons:
+  apt:
+    sources:
+        - sourceline: 'ppa:smspillaz/cmake-2.8.12'
+    packages:
+        - cmake-data 
+        - cmake
+
 before_script:
     - cmake -G "Unix Makefiles" -B./build -H./
     
