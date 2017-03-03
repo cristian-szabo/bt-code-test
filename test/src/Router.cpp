@@ -3,6 +3,7 @@
 #include <bandit/bandit.h>
 
 using namespace bandit;
+using namespace snowhouse;
 
 go_bandit([]() {
     describe("Router Test", []() {
@@ -23,47 +24,47 @@ go_bandit([]() {
         it("should create a router object with a valid data", [&]() {
             bool result = router.create(hostname, ip_address, patched, os_version, notes);
 
-            AssertThat(result, Equals(true));
+            AssertThat(result, IsTrue());
         });
 
         it("should not create a router object with an invalid hostname", [&]() {
             bool result = router.create("", ip_address, patched, os_version, notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
         });
 
         it("should not create a router object with an invalid ip address", [&]() {
             bool result = router.create(hostname, "", patched, os_version, notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
         });
 
         it("should not create a router object with an invalid patched(yes/no)", [&]() {
             bool result = router.create(hostname, ip_address, "", os_version, notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
 
             result = router.create(hostname, ip_address, "123", os_version, notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
 
             result = router.create(hostname, ip_address, "*;]", os_version, notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
         });
 
         it("should not create a router object with an invalid OS version", [&]() {
             bool result = router.create(hostname, ip_address, patched, "", notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
 
             result = router.create(hostname, ip_address, patched, "3xc", notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
 
             result = router.create(hostname, ip_address, patched, "abc", notes);
 
-            AssertThat(result, Equals(false));
+            AssertThat(result, IsFalse());
         });
 
         it("should two router objects be equal", [&]() {

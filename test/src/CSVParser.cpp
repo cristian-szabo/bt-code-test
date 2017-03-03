@@ -3,6 +3,7 @@
 #include <bandit/bandit.h>
 
 using namespace bandit;
+using namespace snowhouse;
 
 go_bandit([]() {
     describe("CSVParser Test", []() {
@@ -73,8 +74,8 @@ go_bandit([]() {
             bool cell1, cell2;
             csv.readRow(cell1, cell2);
 
-            AssertThat(cell1, Equals(true));
-            AssertThat(cell2, Equals(false));
+            AssertThat(cell1, IsTrue());
+            AssertThat(cell2, IsFalse());
         });
 
         it("should read 'floating number' value from cell as float variable", [&]() {
